@@ -12,6 +12,8 @@ typedef struct {
 typedef struct {
   u8 idPlayer;
   char nom[NB_CHAR_NOM_THEME];
+  char aJoue;
+  char etat_mot;
   
 } THEME;
 
