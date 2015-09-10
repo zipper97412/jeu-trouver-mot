@@ -13,7 +13,8 @@ typedef struct {
   u8 idPlayer;
   char nom[NB_CHAR_NOM_THEME];
   char aJoue;
-  char etat_mot;
+  char aTrouve
+  char etatMot;
   
 } THEME;
 
