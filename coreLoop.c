@@ -36,3 +36,16 @@ void parseur(char phrase[], char words[NB_THEME][20])
 		j++;
 	}
 }
+
+void roundLoop(PLAYER players[4], THEME themes[4], char phrases[MAXPH][PHLEN], int vitesse) {
+	
+	int i=0;
+	
+	
+	while(i<MAXPH)
+	{
+		parseur(phrases[i]), 
+	}
+	
+	
+}
