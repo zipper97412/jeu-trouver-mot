@@ -82,7 +82,7 @@ void decodeur(PLAYER *players, THEME *themes char chaine[], int vitesse)
 }
 
 
-void roundLoop(PLAYER players[4], THEME themes[4], char phrases[MAXPH][PHLEN], int vitesse) {
+void roundLoop(PLAYER players[MAXPL], THEME themes[MAXTH], char phrases[MAXPH][PHLEN], int vitesse) {
 	
 	int i=0;
 	char j=0;
@@ -91,11 +91,11 @@ void roundLoop(PLAYER players[4], THEME themes[4], char phrases[MAXPH][PHLEN], i
 	while(i<MAXPH)
 	{
 		parseur(phrases[i], words);
-		decodeur(players, themes, phrases[i], vitesse)
+		decodeur(players, themes, phrases[i], vitesse);
 		for(j=0;j<3;j++) {
-			player[j].etatMot = 0;
-			player[j].aTrouve = 0;
-			player[j].aJoue = 0;
+			player[j].etatMot = WORD_NOTHERE;
+			player[j].aTrouve = FOUND_NOT;
+			player[j].aJoue = TRY_NOPE;
 			words[j][0] = '\0';
 		}
 		i++;
