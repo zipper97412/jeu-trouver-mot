@@ -4,19 +4,28 @@
 #include "stm8s_type.h"
 
 typedef struct {
-  u8 actif;
-  u8 idTheme;
-  
-} PLAYER;
-
-typedef struct {
-  u8 idPlayer;
+  char actif;
+  char idPlayer;
   char nom[NB_CHAR_NOM_THEME];
-  char aJoue;
-  char aTrouve
-  char etatMot;
   
 } THEME;
+
+
+#define WORD_NOTHERE 0
+#define WORD_ENTERING 1
+#define WORD_LEAVING 2
+
+#define TRY_LOST 2
+#define TRY_WON 1
+#define TRY_NOPE 0
+typedef struct {
+  char idTheme;
+  char actif;
+  char aJoue;
+  char aTrouve;
+  char etatMot;
+  
+} PLAYER;
 
 
 #endif
