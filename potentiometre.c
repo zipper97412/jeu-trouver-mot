@@ -58,5 +58,6 @@ char potentiometre (void)
 	clear();
 	UART_putstring("\r\nLa vitesse selectionnee est "); 	
 	while((UART_putchar(n+0x30)==1));
+	UART_putstring("\n");
 	return n;
 }
