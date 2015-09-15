@@ -5,12 +5,20 @@
 
 u8 aff_temp[8];
 //Fonction qui affiche le contenu d'un tableau sur les afficheurs
-void disp(void) 
+void disp() 
 {
 	HDLX2(aff_temp);
 	HDLX1((aff_temp+4));
 }
-
+void printtab(char tab[])
+{
+	int i=0;
+	for(i=0;i<8;i++)
+	{
+		aff_temp[i]=(u8)tab[i];
+	}
+	disp();
+}
 //Fonction qui efface les afficheurs
 void clear(void)
 {
