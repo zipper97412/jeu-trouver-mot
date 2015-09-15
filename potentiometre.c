@@ -29,25 +29,37 @@ char potentiometre (void)
 		mes = ((u8) high << 8) | low;
 		
 		//Allumage des LED
-		if (mes < 0x0050) 
+		if (mes < 0x0025) 
 		{
-			GPIOA->ODR = 0xF7 ;
 			n = 1;
 		}
-		if (mes > 0x0050 && mes < 0x0125 ) 
+		if (mes > 0x0025 && mes < 0x0050 ) 
 		{
-			GPIOA->ODR = 0xE7 ;
 			n = 2;
 		}
-		if (mes > 0x0125 && mes < 0x0200 )
+		if (mes > 0x0075 && mes < 0x0100 )
 		{
-			GPIOA->ODR = 0xC7 ;
 			n = 3;
+		}
+		if (mes > 0x0100 && mes < 0x0125)
+		{
+			n = 4;
+		}
+		if (mes > 0x0125 && mes < 0x0150)
+		{
+			n = 5;
+		}
+		if (mes > 0x0150 && mes < 0x0175)
+		{
+			n = 6;
+		}
+		if (mes > 0x0175 && mes < 0x0200)
+		{
+			n = 7;
 		}
 		if (mes > 0x0200)
 		{
-			GPIOA->ODR = 0x87 ;
-			n = 4;
+			n = 8;
 		}
 		
 		//Defilement de la phrase de test en boucle
