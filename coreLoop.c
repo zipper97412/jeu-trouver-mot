@@ -4,8 +4,6 @@
 #include "datastruct.h"
 #include "afficheur.h"
 
-#define NB_THEME 4
-#define MAXPH 42
 
 void parseur(char phrase[MAXPH], char words[NB_THEME][20]) 
 {	
