@@ -1,8 +1,13 @@
 
 #include "stm8s.h"
-#define NB_THEME 4
+#include "bouton.h"
+#include "datastruct.h"
+#include "afficheur.h"
 
-void parseur(char phrase[], char words[NB_THEME][20]) 
+#define NB_THEME 4
+#define MAXPH 42
+
+void parseur(char phrase[MAXPH], char words[NB_THEME][20]) 
 {	
 	char j=0, k, l, record=0;
 	char used[NB_THEME]={0,0,0,0}; 
@@ -51,13 +56,13 @@ void decodeur(PLAYER *players, THEME *themes char chaine[], int vitesse)
 		
 		//Si le début du mot est au bout de l'afficheur, on passe dans l'état 2 qui attend un espace
 		for(j=0;j<NBJOUEUR;j++)
-			if ((k[j]==8) && (players[j].etatMot==1))
-				players[j].etatMot=2;
+			if ((k[j]==8) && (players[j].etatMot==WORD_ENTERING))
+				players[j].etatMot=WORD_LEAVING;
 
 		//Si le mot est entierrement passé, on dis qu'il n'y a plus de mot a appuyer
 		for(j=0;j<NBJOUEUR;j++)
-			if ((players[j].etatMot==2) && (aff_temp[3]==' '))
-				players[j].etatMot=0;
+			if ((players[j].etatMot==WORD_LEAVING) && (aff_temp[3]==' '))
+				players[j].etatMot=WORD_NOTHERE;
 
 		//On compte le nombre de lettre dans le mot à deviner
 		for(j=0;j<NBJOUEUR;j++)
@@ -68,10 +73,8 @@ void decodeur(PLAYER *players, THEME *themes char chaine[], int vitesse)
 		
 		for(j=0;j<NBJOUEUR;j++)
 		{
-			if ((players[j].aJoue==1) && (players[j].etatMot == 0))
-				players[j].aJoue=0;	
-			if ((players[j].aJoue==2) && (Etat_BP01() == 0))
-				players[j].aJoue=0;
+			if (players[j].etatMot == WORD_NOTHERE)
+				players[j].aJoue=TRY_NOPE;
 		}
 		sleep(vitesse);
 	}
@@ -83,7 +86,7 @@ void roundLoop(PLAYER players[4], THEME themes[4], char phrases[MAXPH][PHLEN], i
 	
 	int i=0;
 	char j=0;
-	char words[NBJOUEUR][20];
+	char words[NBTHEME][20];
 	
 	while(i<MAXPH)
 	{
