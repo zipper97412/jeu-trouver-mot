@@ -1,31 +1,32 @@
-
 #include "stm8s.h"
 #include "bouton.h"
 #include "datastruct.h"
 #include "afficheur.h"
+#include "coreLoop.h"
+#include "sleep.h"
 
 
-void parseur(char phrase[MAXPH], char words[NB_THEME][20]) 
+void parseur(char* chaine, char** words)
 {	
 	char j=0, k, l, record=0;
-	char used[NB_THEME]={0,0,0,0}; 
+	//char used[MAXTH]={0,0,0,0}; 
 	
-	while (phrase[j] != '\0') 
+	while (chaine[j] != '\0') 
 	{
-		if (phrase[j] == '/') 
+		if (chaine[j] == '/') 
 		{
 			record=1;
-			k=chaine[i+1]-0x31;
-			used[k]=1;
+			k=(chaine[j+1]-0x31);
+			//used[k]=1;
 			l=0;
 			j+=2;
 		}
 		if (record == 1)
 		{
-			words[k][l]=phrase[j];
+			words[k][l]=chaine[j];
 			l++;
 			
-			if ((phrase[j+1] == ' ') || (phrase[j+1] == '\0'))
+			if ((chaine[j+1] == ' ') || (chaine[j+1] == '\0'))
 			{
 				words[k][l]='\0';
 				record=0;
@@ -35,11 +36,11 @@ void parseur(char phrase[MAXPH], char words[NB_THEME][20])
 	}
 }
 
-void decodeur(PLAYER *players, THEME *themes char chaine[], int vitesse) 
-{		
-	char k[MAXTHEME];
+void decodeur(PLAYER* players, THEME* themes, char* chaine, int vitesse) {
+
+	char k[MAXTH];
 	char i=0, j=0;
-	char numTheme, numPlayer
+	char numTheme, numPlayer;
 	interrupt_bouton(1);
 	while (chaine[i] != '\0') 
 	{
@@ -52,24 +53,24 @@ void decodeur(PLAYER *players, THEME *themes char chaine[], int vitesse)
 			i+=2;
 		}
 		
-		//Si le début du mot est au bout de l'afficheur, on passe dans l'état 2 qui attend un espace
-		for(j=0;j<NBJOUEUR;j++)
+		//Si le debut du mot est au bout de l'afficheur, on passe dans l'etat 2 qui attend un espace
+		for(j=0;j<MAXPL;j++)
 			if ((k[j]==8) && (players[j].etatMot==WORD_ENTERING))
 				players[j].etatMot=WORD_LEAVING;
 
-		//Si le mot est entierrement passé, on dis qu'il n'y a plus de mot a appuyer
-		for(j=0;j<NBJOUEUR;j++)
+		//Si le mot est entierrement passe, on dis qu'il n'y a plus de mot a appuyer
+		for(j=0;j<MAXPL;j++)
 			if ((players[j].etatMot==WORD_LEAVING) && (aff_temp[3]==' '))
 				players[j].etatMot=WORD_NOTHERE;
 
-		//On compte le nombre de lettre dans le mot à deviner
-		for(j=0;j<NBJOUEUR;j++)
+		//On compte le nombre de lettre dans le mot a� deviner
+		for(j=0;j<MAXPL;j++)
 			k[j]++;
 
 		//On fait afficher la nouvelle lettre du mot
 		push_char(chaine[i++]);
 		
-		for(j=0;j<NBJOUEUR;j++)
+		for(j=0;j<MAXPL;j++)
 		{
 			if (players[j].etatMot == WORD_NOTHERE)
 				players[j].aJoue=TRY_NOPE;
@@ -80,26 +81,45 @@ void decodeur(PLAYER *players, THEME *themes char chaine[], int vitesse)
 }
 
 
-void roundLoop(PLAYER players[MAXPL], THEME themes[MAXTH], char phrases[MAXPH][PHLEN], int vitesse) {
+void roundLoop(PLAYER* players, THEME* themes, const char phrases[MAXPH][PHLEN], int vitesse) {
 	
 	int i=0;
 	char j=0;
-	char words[NBTHEME][20];
+	char words[MAXTH][20];
 	
 	while(i<MAXPH)
 	{
-		parseur(phrases[i], words);
+//		parseur(phrases[i], words);
 		decodeur(players, themes, phrases[i], vitesse);
-		for(j=0;j<3;j++) {
-			player[j].etatMot = WORD_NOTHERE;
-			player[j].aTrouve = FOUND_NOT;
-			player[j].aJoue = TRY_NOPE;
+		for(j=0;j<MAXPL;j++) {
+			players[j].etatMot = WORD_NOTHERE;
+			players[j].aTrouve = FOUND_NOT;
+			players[j].aJoue = TRY_NOPE;
 			words[j][0] = '\0';
 		}
 		i++;
 		sleep(66);
 	}
-	
-	
-	
+
+}
+
+void jouer(PLAYER pJoueur)
+{
+	if(( pJoueur.aJoue==0 ) && ( pJoueur.actif == 1 ))
+	{
+		switch (pJoueur.etatMot)
+		{
+			case 0:
+				pJoueur.aJoue=2;
+			break;
+			case 1:
+				pJoueur.aJoue=1;
+				pJoueur.aTrouve=1;
+			break;
+			case 2:
+				pJoueur.aJoue=1;
+				pJoueur.aTrouve=1;
+			break;
+		}
+	}
 }

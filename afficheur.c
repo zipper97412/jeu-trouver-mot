@@ -2,8 +2,8 @@
 #include "stm8s.h"
 #include "stm8s_conf.h"
 #include "ports.h"
-
 u8 aff_temp[8];
+
 //Fonction qui affiche le contenu d'un tableau sur les afficheurs
 void disp() 
 {
@@ -28,7 +28,7 @@ void clear(void)
 	disp();
 }
 
-//Fonction qui permet de dÃ©caler le texte et d'inserer une lettre Ã  gauche
+//Fonction qui permet de décaler le texte et d'inserer une lettre à gauche
 void push_char(u8 c) 
 {
 	int i=0;
@@ -38,7 +38,7 @@ void push_char(u8 c)
 	disp();
 }
 
-//Fonctions qui gÃ¨re l'afficheur (les 2 HDLX)
+//Fonctions qui gère l'afficheur (les 2 HDLX)
 
 void HDLX1_digit(u8 numero, u8 caractere)
 {

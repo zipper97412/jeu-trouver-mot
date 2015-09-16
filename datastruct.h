@@ -2,12 +2,10 @@
 #define DATASTRUCT
 
 
-typedef struct {
-  char actif;
-  char idPlayer;
-  
-} THEME;
-
+#define MAXPH 14
+#define PHLEN 120
+#define MAXPL 3
+#define MAXTH 4
 
 #define WORD_NOTHERE 0
 #define WORD_ENTERING 1
@@ -29,5 +27,14 @@ typedef struct {
   
 } PLAYER;
 
+
+typedef struct {
+  char actif;
+  char idPlayer;
+  
+} THEME;
+
+extern PLAYER tabJoueur[MAXPL];
+extern THEME tabTheme[MAXTH];
 
 #endif
