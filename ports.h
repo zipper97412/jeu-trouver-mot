@@ -1,19 +1,19 @@
 /* Valeurs destinees aux registres de configuration des ports */
-#ifndef PORTS_H
-#define PORTS_H
+#ifndef PORTS
+#define PORTS
 // Port B pour pilotage des afficheurs
 #define PORT_B_DIRECTION 0xFF  // 8 bits en sortie
 #define PORT_B_TECHNO_LIGNES 0xFF // 8 sorties en push pull
 
 // Port C pour les 4 boutons-poussoirs et SPI
-#define PORT_C_DIRECTION 0x00  //  8 bits en entrï¿½e
-#define PORT_C_TECHNO_LIGNES 0x00 // 8 lignes en floating input
+#define PORT_C_DIRECTION 0x00  //  8 bits en entrée
+#define PORT_C_TECHNO_LIGNES 0x00 // 8 lignes en floating input     
 
 // Port D pour UART2, SWIM, led verte, TLI, channels/timers et /BL HDLX
 #define PORT_D_DIRECTION 0x19  // lignes 0 et 3 en sortie
 #define PORT_D_TECHNO_LIGNES 0x90  //  ligne 0 en open drain ligne 3 en PushPull
 
-// Port E pourI2C, entrï¿½es analogiques et /WR HDLX													 // bit 4 push pull
+// Port E pourI2C, entrées analogiques et /WR HDLX													 // bit 4 push pull
 
 #define PORT_E_DIRECTION 0x28 // lignes 3 et 5 en sortie
 #define PORT_E_TECHNO_LIGNES 0x28  // lignes 3 et 5 en PP

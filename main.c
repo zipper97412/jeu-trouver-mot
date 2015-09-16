@@ -41,6 +41,9 @@ void main(void)
 	char vitesse;
 	init_ports();
 	UART_init();
+	Init_Timer2();
+	t3_setPSCR(0x0003);
+	t3_setARR(0x00F9);
 	
 	
 	while (1)
@@ -48,6 +51,10 @@ void main(void)
 		valide = '0';
 		for(i=0;i<MAXPL;i++) {
 			tabJoueur[i].actif = 0;
+			tabJoueur[i].idJoueur = i;
+			tabJoueur[i].idTheme = 5;
+			tabJoueur[i].score = 0;
+			tabJoueur[i].penality = 0;
 		}
 		for(i=0;i<MAXTH;i++) {
 			tabTheme[i].actif = 0;
@@ -130,6 +137,7 @@ void main(void)
 		UART_putstring("ATTENTION !!! LE JEU VA COMMENCER ! \r\nREGARDER BIEN L'AFFICHEUR ! \r\n\n");
 		
 		decompte();
+		
 		
 		roundLoop(tabJoueur, tabTheme, phrases, vitesse);
 		

@@ -31,7 +31,6 @@ int nb_appui(void)
 void decompte(void)
 {
 	char temp[]="    5   ";
-	Init_Timer4();
 	clear();
 	printtab(temp); sleep2(1000);
 	temp[4]='4';

@@ -1,5 +1,5 @@
-#ifndef TIME_H
-#define TIME_H
+#ifndef TIME
+#define TIME
 
 void elem_sleep(void);
 void sleep(int n);

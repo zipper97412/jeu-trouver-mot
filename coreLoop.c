@@ -4,9 +4,13 @@
 #include "afficheur.h"
 #include "coreLoop.h"
 #include "sleep.h"
+#include "uart.h"
+#include "beep.h"
+#include "affichage_ecran.h"
 
+char words[MAXTH][20];
 
-void parseur(char* chaine, char** words)
+void parseur(char* chaine)
 {	
 	char j=0, k, l, record=0;
 	//char used[MAXTH]={0,0,0,0}; 
@@ -66,7 +70,8 @@ void decodeur(PLAYER* players, THEME* themes, char* chaine, int vitesse) {
 		//On compte le nombre de lettre dans le mot a  deviner
 		for(j=0;j<MAXPL;j++)
 			k[j]++;
-
+		
+		
 		//On fait afficher la nouvelle lettre du mot
 		push_char(chaine[i++]);
 		
@@ -76,6 +81,9 @@ void decodeur(PLAYER* players, THEME* themes, char* chaine, int vitesse) {
 				players[j].aJoue=TRY_NOPE;
 		}
 		sleep(vitesse);
+		
+		
+		
 	}
 	interrupt_bouton(0);
 }
@@ -85,11 +93,10 @@ void roundLoop(PLAYER* players, THEME* themes, const char phrases[MAXPH][PHLEN],
 	
 	int i=0;
 	char j=0;
-	char words[MAXTH][20];
 	
 	while(i<MAXPH)
 	{
-//		parseur(phrases[i], words);
+		parseur(phrases[i]);
 		decodeur(players, themes, phrases[i], vitesse);
 		for(j=0;j<MAXPL;j++) {
 			players[j].etatMot = WORD_NOTHERE;
@@ -103,22 +110,21 @@ void roundLoop(PLAYER* players, THEME* themes, const char phrases[MAXPH][PHLEN],
 
 }
 
-void jouer(PLAYER pJoueur)
+void jouer(PLAYER* pJoueur)
 {
-	if(( pJoueur.aJoue==0 ) && ( pJoueur.actif == 1 ))
+	if(( pJoueur->aJoue==0 ) && ( pJoueur->actif == 1 ))
 	{
-		switch (pJoueur.etatMot)
+		switch (pJoueur->etatMot)
 		{
 			case 0:
-				pJoueur.aJoue=2;
+				pJoueur->aJoue=2;
+				pJoueur->penality++;
 			break;
-			case 1:
-				pJoueur.aJoue=1;
-				pJoueur.aTrouve=1;
-			break;
-			case 2:
-				pJoueur.aJoue=1;
-				pJoueur.aTrouve=1;
+			default:
+				pJoueur->aJoue=1;
+				pJoueur->aTrouve=1;
+				pJoueur->score++;
+				affich_ecran(pJoueur);
 			break;
 		}
 	}

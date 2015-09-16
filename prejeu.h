@@ -1,5 +1,5 @@
-#ifndef PREJEU_H
-#define PREJEU_H
+#ifndef PREJEU
+#define PREJEU
 int nb_appui(void);
 void decompte(void);
 #endif

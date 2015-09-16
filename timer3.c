@@ -19,7 +19,7 @@ void t3_init(void)
 void t3_setARR(u16 arr)
 {
 	TIM3->ARRH = (u8)arr & 0xFF00;
-	TIM3->ARRL = (u8)arr&0xFF;
+	TIM3->ARRL = (u8)arr & 0xFF;
 }
 
 /**

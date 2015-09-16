@@ -1,6 +1,6 @@
 /* TIMER 3 */
-#ifndef TIMER3_H
-#define TIMER3_H
+#ifndef TIMER3
+#define TIMER3
 
 /**
 \brief cette fonction permet d'initialiser le timer 3
@@ -10,7 +10,7 @@ void t3_init(void);
 
 /**
 \brief cette fonction permet de modifier les registres ARR
-\param arr la nouvelle valeur ï¿½ mettre dans les registres
+\param arr la nouvelle valeur à mettre dans les registres
 */
 void t3_setARR(u16 arr);
 

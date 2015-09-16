@@ -1,5 +1,7 @@
 #include "stm8s.h"
 #include "beep.h"
+#include "timer4.h"
+#include "ports.h"
 
 /* génère des périodes de 1ms*/
 void sleep2(int temps)
@@ -7,11 +9,12 @@ void sleep2(int temps)
 	int i;
 	for (i=0; i<temps; i++)
 	{
-		TIM4->CNTR = 0x00;
-		TIM4->CR1 |= 0x01;
-		while((TIM4->SR1 & TIM4_SR1_UIF) != TIM4_SR1_UIF);
-		TIM4->SR1 &= ~TIM4_SR1_UIF; 
-		TIM4->CR1 &= ~0x01;
+		TIM3->CNTRH = 0x00;
+		TIM3->CNTRL = 0x00;
+		TIM3->CR1 |= 0x01;
+		while((TIM3->SR1 & TIM3_SR1_UIF) != TIM3_SR1_UIF);
+		TIM3->SR1 &= ~TIM4_SR1_UIF; 
+		TIM3->CR1 &= ~0x01;
 	}
 }
 

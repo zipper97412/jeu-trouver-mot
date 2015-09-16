@@ -1,5 +1,5 @@
-#ifndef DATASTRUCT_H
-#define DATASTRUCT_H
+#ifndef DATASTRUCT
+#define DATASTRUCT
 
 
 #define MAXPH 14
@@ -24,17 +24,21 @@ typedef struct {
   char aJoue;
   char aTrouve;
   char etatMot;
-
+	char score;
+  char penality;
+	char idJoueur;
+	
 } PLAYER;
 
 
 typedef struct {
   char actif;
   char idPlayer;
-
+  
 } THEME;
 
 extern PLAYER tabJoueur[MAXPL];
 extern THEME tabTheme[MAXTH];
+extern char words[MAXTH][20];
 
 #endif
