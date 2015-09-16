@@ -1,12 +1,12 @@
 /* UART */
 
-#include "stm8s_type.h"
-
 #ifndef UART_H
 #define UART_H
 
+#include "stm8s_type.h"
+
 #define ERROR  1
-#define SUCCESS  0 
+#define SUCCESS  0
 #define EMPTY 0
 
 /**

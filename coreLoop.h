@@ -1,5 +1,5 @@
-#ifndef CORELOOP
-#define CORELOOP
+#ifndef CORELOOP_H
+#define CORELOOP_H
 #include "datastruct.h"
 
 

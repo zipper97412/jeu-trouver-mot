@@ -1,5 +1,5 @@
-#ifndef TIMER4
-#define TIMER4
+#ifndef TIMER4_H
+#define TIMER4_H
 /**
 \brief cette fonction permet d'initialiser le timer 4
 */
@@ -8,7 +8,7 @@ void t4_init(void);
 
 /**
 \brief cette fonction permet de modifier les registres ARR
-\param arr la nouvelle valeur à mettre dans les registres
+\param arr la nouvelle valeur ï¿½ mettre dans les registres
 */
 void t4_setARR(u8 arr);
 
@@ -32,8 +32,8 @@ void t4_start(void);
 void t4_reset(void);
 
 /**
-\brief cette fonction permet de connaitre le temps écoulé d'un timer en secondes.
-\return le temps écoulé en secondes
+\brief cette fonction permet de connaitre le temps ï¿½coulï¿½ d'un timer en secondes.
+\return le temps ï¿½coulï¿½ en secondes
 */
 u8 t4_elapsedTime(void);
 

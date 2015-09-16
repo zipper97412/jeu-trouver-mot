@@ -1,3 +1,7 @@
+#ifndef BEEP_H
+#define BEEP_H
+
+
 void sleep2(int temps);
 void beep(int freq);
 void melodie (int freq, int compteur);
@@ -24,3 +28,5 @@ void fin_decompte(void);
 #define gH 784
 #define gSH 830
 #define aH 880
+
+#endif

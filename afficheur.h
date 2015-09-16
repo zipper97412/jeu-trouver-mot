@@ -1,7 +1,9 @@
-#include "stm8s.h"
-#include "stm8s_conf.h"
+
 #ifndef AFFICHEUR
 #define AFFICHEUR
+
+#include "stm8s.h"
+#include "stm8s_conf.h"
 
 extern u8 aff_temp[8];
 void clear(void);
