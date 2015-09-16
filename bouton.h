@@ -1,5 +1,5 @@
-#ifndef BOUTON
-#define BOUTON
+#ifndef BOUTON_H
+#define BOUTON_H
 char Etat_BP01(void);
 char Etat_BP02(void);
 char Etat_BP03(void);
