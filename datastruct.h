@@ -27,14 +27,15 @@ typedef struct {
 	char score;
   char penality;
 	char idJoueur;
-	
+  char foundWords[MAXPH][20];
+
 } PLAYER;
 
 
 typedef struct {
   char actif;
   char idPlayer;
-  
+
 } THEME;
 
 extern PLAYER tabJoueur[MAXPL];
