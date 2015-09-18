@@ -15,6 +15,8 @@
 #include "theme.h"
 #include "prejeu.h"
 #include "coreLoop.h"
+#include "beep.h"
+#include "score.h"
 
 const char phrases[MAXPH][PHLEN]= {"Cette /1ecole n'est pas specialisee dans la /2medecine ni dans l'aviation...         ",
 						"Cela fait moins de /120ans que /3Mitterand n'est plus parmi nous.         ",
@@ -29,14 +31,14 @@ const char phrases[MAXPH][PHLEN]= {"Cette /1ecole n'est pas specialisee dans la 
 						"Peu a peu, /1l'electronique regit de plus en plus notre mode de vie.         ",
 						"Les effets des /2medicaments prescrits a Sanchez furent concluants.         ",
 						"C'est en /31789 que le peuple se souleva pour faire valoir ses droits aux yeux du monde entier.         ",
-						"Le petrole est devenu a notre /3epoque indispensable pour le monde tel qu'il est maintenant.         "
+						"Le petrole est devenu a notre /3epoque indispensable pour le monde tel qu'il est maintenant.         " 
 						};
 PLAYER tabJoueur[MAXPL];
 THEME tabTheme[MAXTH];
 
 void main(void)
 {
-	char valide = '0';
+	int valide;
 	char i=0, nbJoueur=0;
 	char vitesse;
 	init_ports();
@@ -44,61 +46,69 @@ void main(void)
 	Init_Timer2();
 	t3_setPSCR(0x0003);
 	t3_setARR(0x00F9);
+	t4_setARR(234);
+	t4_setPSCR(0x07);
 	
 	
 	while (1)
 	{
-		valide = '0';
-		for(i=0;i<MAXPL;i++) {
+		valide = 0;
+		GPIOA->ODR = 0xFF;
+		for(i=0;i<MAXPL;i++) 
+		{
 			tabJoueur[i].actif = 0;
 			tabJoueur[i].idJoueur = i;
 			tabJoueur[i].idTheme = 5;
 			tabJoueur[i].score = 0;
 			tabJoueur[i].penality = 0;
 		}
-		for(i=0;i<MAXTH;i++) {
+		
+		for(i=0;i<MAXTH;i++) 
+		{
 			tabTheme[i].actif = 0;
 		}
-		while(Etat_BP04() == 0);
-		UART_putstring("Joueurs : Presentez-vous \r\n");
+		UART_putstring("\r\n\n\n\n\n==================================== GRENOBLE INP ESISAR ====================================\r\n\n                                         \"20 ans\"\r\n\n                                  Jeu : Trouver les mots\r\n\nAppuyez sur Espace pour commencer le jeu\r\n\n");
+		while(UART_getchar()!= ' ');
+		//clear_uart();
+		UART_putstring("\rJoueurs : Presentez-vous \r\n");
 		UART_putstring("Appuyez sur les boutons 1, 2 ou 3\r\n");
-		UART_putstring("Une fois tous les joueurs inscrits, appuyez sur le bouton 4 pour valider\r\n\n");
-		while(Etat_BP04() != 0 || valide == '0' )
+		UART_putstring("Une fois tous les joueurs inscrits, appuyez sur Espace pour valider\r\n\n");
+		
+		while( (UART_getchar()!= ' ' || valide == 0))  
 		{
 			//H ET T°
 			if ( (Etat_BP01() == 0) && tabJoueur[0].actif == 0 )
 			{
 					UART_putstring("Le joueur 1 rentre en lice ! \r\n");
 					tabJoueur[0].actif=1;
+					GPIOA->ODR &= 0xF7 ;
 					nbJoueur++;
+					valide =1;
 			}
 			if ( (Etat_BP02() == 0) && tabJoueur[1].actif == 0 )
 			{
 					UART_putstring("Le joueur 2 rentre en lice ! \r\n");
 					tabJoueur[1].actif=1;
+					GPIOA->ODR &= 0xEF ;
 					nbJoueur++;
+					valide =1;
 			}
 			if ((Etat_BP03() == 0) && tabJoueur[2].actif == 0 )
 			{
 					UART_putstring("Le joueur 3 rentre en lice ! \r\n");
 					tabJoueur[2].actif=1;
+					GPIOA->ODR &= 0xDF ;
 					nbJoueur++;
+					valide =1;
 			}
-			valide = '1';
 		}
-		while (Etat_BP04() == 0);
-		UART_putstring("\nVeuillez maintenant selectionner la vitesse de defilement a l aide du potentiometre\r\n");
-		UART_putstring("Validez la vitesse en appuyant sur le bouton 4\n");
-		
+
+		UART_putstring("\nVeuillez maintenant selectionner la vitesse de defilement a l'aide du potentiometre\r\n");
+		UART_putstring("Validez la vitesse en appuyant sur Espace\n");
 		
 		t4_reset();
-		t4_setARR(234);
-		t4_setPSCR(0x07);
 		vitesse = potentiometre();
 		t4_reset();
-		
-		while (Etat_BP04() == 0);
-		
 		
 		if (tabJoueur[0].actif == 1)
 		{
@@ -116,14 +126,15 @@ void main(void)
 			deter_theme(2, tabJoueur);
 		}
 		
-		for(i=0;i<MAXPL;i++) {
-			if (tabJoueur[i].actif == 0) {
+		for(i=0;i<MAXPL;i++) 
+		{
+			if (tabJoueur[i].actif != 0) 
+			{
 				tabTheme[tabJoueur[i].idTheme].actif=1;
 				tabTheme[tabJoueur[i].idTheme].idPlayer=i;
 			}
 		}
-		
-		
+
 		while(nb_appui() != 0);
 		
 		UART_putstring("\nAppuyez tous en meme temps sur votre bouton lorsque vous serez prets.\r\n");
@@ -137,11 +148,11 @@ void main(void)
 		UART_putstring("ATTENTION !!! LE JEU VA COMMENCER ! \r\nREGARDER BIEN L'AFFICHEUR ! \r\n\n");
 		
 		decompte();
-		
-		
+	
 		roundLoop(tabJoueur, tabTheme, phrases, vitesse);
+
+		disp_score(tabJoueur);
 		
-		
-		
+		marche_imperiale();
 	}
 }

@@ -5,6 +5,9 @@ void marche_imperiale (void);
 void bruit_decompte(void);
 void fin_decompte(void);
 void juste(void);
+void beepOn(int freq);
+void beepOff(void);
+
 
 #define c 261
 #define d 294

@@ -10,4 +10,5 @@ void disp(void);
 void push_char(u8 c);
 void HDLX1(u8* chaine);
 void HDLX2(u8* chaine);
+void clear_uart(void);
 #endif

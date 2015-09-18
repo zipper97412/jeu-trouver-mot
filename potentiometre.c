@@ -14,11 +14,11 @@ char potentiometre (void)
 	u16 mes = 0;
 	char i = 0; 	char n=0 ;
 	char text[] = "Les phrases defileront a cette vitesse.  ";
-		ADC1->CSR |= ADC1_CHANNEL_9;
+	ADC1->CSR |= ADC1_CHANNEL_9;
 	ADC1->CR2 |= ADC1_ALIGN_RIGHT;	
 	ADC1->CR1 |= 0x01;
 
-	while ( Etat_BP04() != 0 )
+	while ( (UART_getchar()!= ' ') )
 		{
 		ADC1->CR1 |= 0x01;
 		while ( (ADC1->CSR & ADC1_IT_EOC) != ADC1_IT_EOC ) ;

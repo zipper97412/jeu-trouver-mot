@@ -4,7 +4,7 @@
 
 void affich_ecran(PLAYER* pJoueur)
 {
-	UART_putstring("Joueur numero");
+	UART_putstring("Joueur ");
 	while( (UART_putchar(pJoueur->idJoueur+0x31)==1) );
 	UART_putstring(" : Vous avez trouve le mot ");
 	UART_putstring(words[pJoueur->idTheme]);

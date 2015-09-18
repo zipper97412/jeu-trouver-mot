@@ -14,11 +14,11 @@ struct interrupt_vector {
 @interrupt void bouton(void)
 {
 	if ((GPIOC->IDR & 0x02) == GPIO_PIN_1)
-		jouer(&tabJoueur[0]);
+		jouer(&(tabJoueur[0]));
 	else if ((GPIOC->IDR & 0x04) == GPIO_PIN_2)
-		jouer(&tabJoueur[1]);
+		jouer(&(tabJoueur[1]));
 	else if ((GPIOC->IDR & 0x08) == GPIO_PIN_3)
-		jouer(&tabJoueur[2]);
+		jouer(&(tabJoueur[2]));
 		return;
 }
 

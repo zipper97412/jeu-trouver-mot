@@ -6,25 +6,8 @@
 #include "beep.h"
 #include "ports.h"
 
-int nb_appui(void)
-{
-	int nbBoutons=0;
-	if(Etat_BP01()==0)
-	{
-		nbBoutons++;
-	}
-	if(Etat_BP02()==0)
-	{
-		nbBoutons++;
-	}
-	if(Etat_BP03()==0)
-	{
-		nbBoutons++;
-	}
-	if(Etat_BP04()==0)
-	{
-		nbBoutons++;
-	}
+int nb_appui(void){
+	return (!Etat_BP01() + !Etat_BP02() + !Etat_BP03() + !Etat_BP04());
 }
 
 	

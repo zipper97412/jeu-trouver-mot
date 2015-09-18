@@ -2,6 +2,7 @@
 #include "stm8s.h"
 #include "stm8s_conf.h"
 #include "ports.h"
+#include "uart.h"
 u8 aff_temp[8];
 
 //Fonction qui affiche le contenu d'un tableau sur les afficheurs
@@ -26,6 +27,11 @@ void clear(void)
 	for (i=0;i<8;i++)
 		aff_temp[i]=' ';
 	disp();
+}
+
+void clear_uart(void)
+{
+	UART_putstring("\r\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 }
 
 //Fonction qui permet de décaler le texte et d'inserer une lettre à gauche

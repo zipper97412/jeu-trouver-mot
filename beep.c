@@ -26,6 +26,16 @@ void beep(int freq)
 	TIM2->ARRL = arr%256;
 }
 
+void beepOn(int freq) {
+	beep (freq);
+	TIM2->CR1 |= (u8)TIM2_CR1_CEN;
+	
+}
+
+void beepOff(void) {
+	TIM2->CR1 &= ~(u8)TIM2_CR1_CEN;
+}
+
 void melodie (int freq, int compteur)
 {
 	TIM2->CR1 &= ~(u8)TIM2_CR1_CEN;

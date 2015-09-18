@@ -1,11 +1,13 @@
 #ifndef DATASTRUCT
 #define DATASTRUCT
+  
 
-
-#define MAXPH 14
-#define PHLEN 120
+#define MAXPH 15
+#define PHLEN 110
 #define MAXPL 3
 #define MAXTH 4
+#define FEEDBACK_LED 10
+#define FEEDBACK_BUZZER 4
 
 #define WORD_NOTHERE 0
 #define WORD_ENTERING 1
@@ -18,6 +20,7 @@
 #define FOUND_NOT 0
 #define FOUND_YES 1
 
+
 typedef struct {
   char idTheme;
   char actif;
@@ -27,7 +30,7 @@ typedef struct {
 	char score;
   char penality;
 	char idJoueur;
-  char foundWords[MAXPH][20];
+  //char foundWords[MAXPH][20];
 
 } PLAYER;
 

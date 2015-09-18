@@ -7,17 +7,17 @@
 #include "uart.h"
 #include "beep.h"
 #include "affichage_ecran.h"
-
+#include "leds.h"
 char words[MAXTH][20];
 
 void parseur(char* chaine)
-{
+{	
 	char j=0, k, l, record=0;
-	//char used[MAXTH]={0,0,0,0};
-
-	while (chaine[j] != '\0')
+	//char used[MAXTH]={0,0,0,0}; 
+	
+	while (chaine[j] != '\0') 
 	{
-		if (chaine[j] == '/')
+		if (chaine[j] == '/') 
 		{
 			record=1;
 			k=(chaine[j+1]-0x31);
@@ -29,7 +29,7 @@ void parseur(char* chaine)
 		{
 			words[k][l]=chaine[j];
 			l++;
-
+			
 			if ((chaine[j+1] == ' ') || (chaine[j+1] == '\0'))
 			{
 				words[k][l]='\0';
@@ -43,10 +43,14 @@ void parseur(char* chaine)
 void decodeur(PLAYER* players, THEME* themes, char* chaine, int vitesse) {
 
 	char k[MAXTH];
-	char i=0, j=0, k=0;
+	char i=0, j=0, l=0;
 	char numTheme, numPlayer;
-	char beep=0;
+	char winFeedbackLed[MAXPL];
+	char winFeedbackBeep[MAXPL];
+	char lostFeedbackLed[MAXPL];
 	interrupt_bouton(1);
+	ledInit();
+	
 	while (chaine[i] != '\0')
 	{
 		if (chaine[i] == '/')
@@ -61,6 +65,8 @@ void decodeur(PLAYER* players, THEME* themes, char* chaine, int vitesse) {
 		for(j=0;j<MAXPL;j++) {
 			k[j]++;
 
+
+			feedbackManager(winFeedbackLed, winFeedbackBeep, lostFeedbackLed, j);
 			if(players[j].etatMot!=WORD_NOTHERE) {
 				switch(players[j].etatMot) {
 					case WORD_ENTERING:
@@ -74,31 +80,25 @@ void decodeur(PLAYER* players, THEME* themes, char* chaine, int vitesse) {
 						}
 					break;
 				}
-
+				
 			}
 			else {
-				players[j].aJoue=TRY_NOPE;
-			}
-
-			if(beep != 0) {
-				beep--;
-				if(beep == 0) {
-					//stoper le buzzer
+				if(players[j].aJoue == TRY_LOST) {
+					lostFeedbackLed[j]=FEEDBACK_LED;
+					ledOn(j+4);
+					
 				}
+				players[j].aJoue=TRY_NOPE;
+				
 			}
-
+			
 			if(players[j].aTrouve == FOUND_YES) {
 				players[j].aTrouve = FOUND_NOT;
-				beep=3;
-				//lancer le buzzer
-				for(k=0;words[j][k] != '\0';k++) {
-					players[j].foundWords[players[j].score][k] = words[j][k];
-					k++;
-				}
-				players[j][k] = '\0'
-
+				winFeedbackLed[j]=FEEDBACK_LED;
+				winFeedbackBeep[j]=FEEDBACK_BUZZER;
+				beepOn(fH);
+				ledOn(j);
 			}
-
 		}
 
 
@@ -108,12 +108,34 @@ void decodeur(PLAYER* players, THEME* themes, char* chaine, int vitesse) {
 	interrupt_bouton(0);
 }
 
+void feedbackManager(char* winFeedbackLed, char* winFeedbackBeep, char* lostFeedbackLed, char j) {
+	
+	if((winFeedbackLed[j]) != 0) {
+		(winFeedbackLed[j])--;
+		if((winFeedbackLed[j]) == 0) {
+			ledOff(j);
+		}
+	}
+	if((winFeedbackBeep[j]) != 0) {
+		(winFeedbackBeep[j])--;
+		if((winFeedbackBeep[j]) == 0) {
+			beepOff();
+		}
+	}
+	if((lostFeedbackLed[j]) != 0) {
+		(lostFeedbackLed[j])--;
+		if((lostFeedbackLed[j]) == 0) {
+			ledOff(j+4);
+		}
+	}
+}
+
 
 void roundLoop(PLAYER* players, THEME* themes, const char phrases[MAXPH][PHLEN], int vitesse) {
-
+	
 	int i=0;
 	char j=0;
-
+	
 	while(i<MAXPH)
 	{
 		parseur(phrases[i]);
@@ -132,19 +154,20 @@ void roundLoop(PLAYER* players, THEME* themes, const char phrases[MAXPH][PHLEN],
 
 void jouer(PLAYER* pJoueur)
 {
-	if(( pJoueur->aJoue==0 ) && ( pJoueur->actif == 1 ))
+	if(( pJoueur->aJoue==TRY_NOPE ) && ( pJoueur->actif == 1 ))
 	{
 		switch (pJoueur->etatMot)
 		{
-			case 0:
-				pJoueur->aJoue=2;
+			case WORD_NOTHERE:
+				pJoueur->aJoue=TRY_LOST;
 				pJoueur->penality++;
 			break;
 			default:
-				pJoueur->aJoue=1;
+				pJoueur->aJoue=TRY_WON;
 				pJoueur->aTrouve=FOUND_YES;
 				pJoueur->score++;
 				affich_ecran(pJoueur);
+				
 			break;
 		}
 	}
